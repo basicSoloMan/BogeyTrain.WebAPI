@@ -53,3 +53,18 @@ func GetPlayerById(db *sql.DB, id int64) (*models.Player, error) {
 
 	return &p, nil
 }
+
+func InsertPlayer(db *sql.DB, player *models.Player) (int64, error) {
+	query := "insert into players(first_name, last_name) values (?, ?)"
+	result, err := db.Exec(query, player.FirstName, player.LastName)
+	if err != nil {
+		return 0, err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
+}
